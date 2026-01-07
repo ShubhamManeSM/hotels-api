@@ -56,27 +56,6 @@ app.get("/hotels", async (req, res) => {
 });
 
 
-async function getHotelByName(hotelName) {
-  try {
-    const hotels = await Hotel.find({ name: hotelName });
-    return hotels;
-  } catch (error) {
-    throw error;
-  }
-}
-
-app.get("/hotels/:hotelName", async (req, res) => {
-  try {
-    const hotels = await getHotelByName(req.params.hotelName);
-    if (hotels.length != 0) {
-      res.json(hotels);
-    } else {
-      res.status(404).json({ error: "No hotel found" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch hotel" });
-  }
-});
 
 async function getHotelByPhoneNumber(phoneNumber) {
   try {
@@ -134,6 +113,28 @@ async function getHotelsByCategory(hotelCategory) {
 app.get("/hotels/category/:hotelCategory", async (req, res) => {
   try {
     const hotels = await getHotelsByCategory(req.params.hotelCategory);
+    if (hotels.length != 0) {
+      res.json(hotels);
+    } else {
+      res.status(404).json({ error: "No hotel found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch hotel" });
+  }
+});
+
+async function getHotelByName(hotelName) {
+  try {
+    const hotels = await Hotel.find({ name: hotelName });
+    return hotels;
+  } catch (error) {
+    throw error;
+  }
+}
+
+app.get("/hotels/:hotelName", async (req, res) => {
+  try {
+    const hotels = await getHotelByName(req.params.hotelName);
     if (hotels.length != 0) {
       res.json(hotels);
     } else {
